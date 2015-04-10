@@ -13,7 +13,8 @@ import java.io.IOException;
 
 /**
  * Created by Soeren Berken-Mersmann on 09.04.2015.
- * ImageJ Plugin for Alpha Blending
+ * Alpha Blending Plugin for ImageJ
+ * Implements A over B (Porter Duff Algorithm)
  */
 public class Alpha_Blending implements PlugIn {
 
@@ -22,8 +23,8 @@ public class Alpha_Blending implements PlugIn {
     private ImagePlus image1;
     private ImagePlus image1Alpha;
     private ImagePlus image2;
-
     private ImagePlus image2Alpha;
+
     private ColorProcessor cp;
     private ByteProcessor bp;
 
@@ -37,11 +38,11 @@ public class Alpha_Blending implements PlugIn {
         cp = new ColorProcessor(width, height);
         bp = new ByteProcessor(width, height);
 
-        int[] rgb1 = (int[]) image1.getProcessor().getPixels();
-        int[] rgb2 = (int[]) image2.getProcessor().getPixels();
+        int[] rgb1 = buildPixelArray(image1, width, height);
+        int[] rgb2 = buildPixelArray(image2, width, height);
 
-        int[] alpha1src = (int[]) image1Alpha.getProcessor().getPixels();
-        int[] alpha2src = (int[]) image2Alpha.getProcessor().getPixels();
+        int[] alpha1src = buildPixelArray(image1Alpha, width, height);
+        int[] alpha2src = buildPixelArray(image2Alpha, width, height);
 
         int[] alpha1 = calculateAlpha(alpha1src);
         int[] alpha2 = calculateAlpha(alpha2src);
@@ -57,6 +58,38 @@ public class Alpha_Blending implements PlugIn {
 
         BufferedImage resultImage = create(cp, bp);
         saveResult(resultImage);
+    }
+
+    /**
+     * Returns an array of all pixels contained in the image. If the image is smaller then the target image, the array will be filled with zeros.
+     * @param image to get pixels from
+     * @param width of the target image
+     * @param height of the target image
+     * @return array[width*height] of all pixels
+     */
+    private int[] buildPixelArray(ImagePlus image, int width, int height) {
+        int[] srcArray = (int[]) image.getProcessor().getPixels();
+
+        int imageWidth = image.getWidth();
+        int imageHeight = image.getHeight();
+
+        if(imageWidth == width && imageHeight == height) {
+            return srcArray;
+        }
+
+        int[] resArray = new int[width*height];
+
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) {
+                if(y >= imageHeight || x >= imageWidth) {
+                    resArray[x + width * y] = 0;
+                } else {
+                    resArray[x + width * y] = srcArray[x + imageWidth * y];
+                }
+            }
+        }
+
+        return resArray;
     }
 
     /**
@@ -89,7 +122,6 @@ public class Alpha_Blending implements PlugIn {
      */
     private void saveResult(BufferedImage resultImage) {
         try {
-
             File outputFile = new File(OUTPUT_FILE);
             ImageIO.write(resultImage, "png", outputFile);
         } catch (IOException e) {
@@ -118,21 +150,32 @@ public class Alpha_Blending implements PlugIn {
         float alpha1Normalized = alpha1 / (float) 0xff;
         float alpha2Normalized = alpha2 / (float) 0xff;
 
+        float alphaNorm = calculateAlpha(alpha1Normalized, alpha2Normalized);
+        int alpha = (int) (alphaNorm * 0xff);
+
         // calculate color value
         for (int i = 0; i < 3; i++) {
             // for each color channel do
             // color_A * alpha_A + color_B * alpha_B * ( 1 - alpha_A)
             // (sum weighted by alpha values)
-            rgb[i] = (int) (rgb1[i] * alpha1Normalized + rgb2[i]  * alpha2Normalized * (1 - alpha1Normalized));
+            rgb[i] = calculateColor(rgb1[i], rgb2[i], alpha1Normalized, alpha2Normalized, alphaNorm);
         }
 
         // calculate alpha value
-        float alphaNorm = alpha1Normalized + alpha2Normalized * (1 - alpha1Normalized);
-        int alpha = (int) (alphaNorm * 0xff);
 
         // set output color & alpha
         cp.set(x, y, combineRGB(rgb));
         bp.set(x, y, alpha);
+    }
+
+    protected float calculateAlpha(float alpha1Normalized, float alpha2Normalized) {
+        return alpha1Normalized + alpha2Normalized * (1 - alpha1Normalized);
+    }
+
+    protected int calculateColor(int color1, int color2, float alpha1Normalized, float alpha2Normalized, float alphaNorm) {
+        // since png doesn't use pre-multiplied color values (where the color would be (r/a,g/a,b/a) instead of (r,g,b))
+        // we can use the simple Color_A * alpha_A + Color_B * alpha_B * (1 - alpha_A)
+        return (int) (color1 * alpha1Normalized + color2  * alpha2Normalized * (1 - alpha1Normalized));
     }
 
     /**
