@@ -3,7 +3,7 @@
  * Alpha Composition using the A exclusive or B operator
  * (short A xor B)
  */
-public class A_xor_B extends Alpha_Blending {
+public class AXorB extends Alpha_Blending {
 
     @Override
     protected float calculateAlpha(float alpha1Normalized, float alpha2Normalized) {
