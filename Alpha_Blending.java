@@ -1,15 +1,19 @@
+import ij.IJ;
 import ij.ImagePlus;
+import ij.WindowManager;
 import ij.io.Opener;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Soeren Berken-Mersmann on 09.04.2015.
@@ -30,6 +34,24 @@ public class Alpha_Blending implements PlugIn {
 
     @Override
     public void run(String s) {
+        int[] imageIDs = WindowManager.getIDList();
+        if (imageIDs == null || imageIDs.length < 1)
+        {
+            IJ.log("Please open at least one image before activating this plugin");
+            return;
+        }
+
+        java.util.List<ImagePlus> images = new ArrayList();
+        for (int i = 0; i < imageIDs.length; i++) {
+            images.add(WindowManager.getImage(imageIDs[i]));
+        }
+
+        PluginDialog dialog = new PluginDialog(images);
+     //   Dialog d = new Dialog(dialog);
+      //  d.setVisible(true);
+    }
+
+    public void execute(ImagePlus imageA, ImagePlus imageB) {
         loadImages();
 
         int width = Math.max(image1.getWidth(),image2.getWidth());
