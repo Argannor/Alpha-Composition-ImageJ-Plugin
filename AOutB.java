@@ -3,7 +3,7 @@
  * Alpha Composition using the A held out by B operator
  * (short A out B)
  */
-public class A_out_B extends Alpha_Blending {
+public class AOutB extends Alpha_Blending {
     @Override
     protected int calculateColor(int color1, int color2, float alpha1Normalized, float alpha2Normalized, float alphaNorm) {
         // The color is always Color_A

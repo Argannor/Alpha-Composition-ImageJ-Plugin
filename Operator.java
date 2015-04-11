@@ -3,10 +3,10 @@
  */
 public enum Operator {
     A_OVER_B (new Alpha_Blending()),
-    A_IN_B (new A_in_B()),
-    A_OUT_B (new A_out_B()),
-    A_ATOP_B (new A_atop_B()),
-    A_XOR_B (new A_xor_B());
+    A_IN_B (new AInB()),
+    A_OUT_B (new AOutB()),
+    A_ATOP_B (new AAtopB()),
+    A_XOR_B (new AXorB());
 
     private Alpha_Blending operator;
 

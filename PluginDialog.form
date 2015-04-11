@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="PluginDialog">
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="7" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+    <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="545" height="218"/>
+      <xy x="20" y="20" width="555" height="221"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <component id="7eaa5" class="javax.swing.JList" binding="operatorList">
-        <constraints>
-          <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="2" anchor="9" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
       <component id="c4a06" class="javax.swing.JLabel">
         <constraints>
-          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="104" height="16"/>
           </grid>
         </constraints>
@@ -28,7 +20,7 @@
       </component>
       <component id="66ab9" class="javax.swing.JComboBox" binding="imageASelector">
         <constraints>
-          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="387" height="26"/>
           </grid>
         </constraints>
@@ -36,7 +28,7 @@
       </component>
       <component id="b381b" class="javax.swing.JLabel">
         <constraints>
-          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="104" height="16"/>
           </grid>
         </constraints>
@@ -46,7 +38,7 @@
       </component>
       <component id="65eb4" class="javax.swing.JComboBox" binding="imageBSelector">
         <constraints>
-          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="387" height="26"/>
           </grid>
         </constraints>
@@ -73,13 +65,55 @@
           <text value="Cancel"/>
         </properties>
       </component>
-      <component id="a5cb6" class="javax.swing.JLabel">
+      <component id="e810c" class="javax.swing.JLabel">
         <constraints>
-          <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Alpha Composition Plugin"/>
+          <text value="Select Operator"/>
         </properties>
+      </component>
+      <component id="cc9c8" class="javax.swing.JComboBox" binding="operatorSelector">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="b279d" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="104" height="16"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Select Alpha A"/>
+        </properties>
+      </component>
+      <component id="b2997" class="javax.swing.JComboBox" binding="alphaASelector">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="387" height="26"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="93e07" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="104" height="16"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Select Alpha B"/>
+        </properties>
+      </component>
+      <component id="696df" class="javax.swing.JComboBox" binding="alphaBSelector">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="387" height="26"/>
+          </grid>
+        </constraints>
+        <properties/>
       </component>
     </children>
   </grid>

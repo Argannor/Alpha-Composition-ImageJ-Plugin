@@ -2,7 +2,7 @@
  * Created by Soeren Berken-Mersmann on 10.04.15.
  * Alpha Composition using the A atop B operator
  */
-public class A_atop_B extends Alpha_Blending {
+public class AAtopB extends Alpha_Blending {
 
     @Override
     protected float calculateAlpha(float alpha1Normalized, float alpha2Normalized) {

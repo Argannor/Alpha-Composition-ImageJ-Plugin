@@ -7,7 +7,6 @@ import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.*;
@@ -19,10 +18,26 @@ import java.util.ArrayList;
  * Created by Soeren Berken-Mersmann on 09.04.2015.
  * Alpha Blending Plugin for ImageJ
  * Implements A over B (Porter Duff Algorithm)
+ *
+ * Usage:
+ * Open the images you want to compose in ImageJ
+ * Run the Plugin, and select the following:
+ *  Composition operator (e.g. A over B)
+ *  Image A
+ *  Alpha A (this can be the same as ImageA, in which case the brightness will be interpreted as the alpha value)
+ *  Image B
+ *  Alpha B (see above)
+ * And press Compose!
+ *
+ * The resulting image will be saved to your ImageJ folder as "alpha_composition_result.png" and will be opened with ImageJ automatically.
+ *
+ * Note: This plugin interprets the provided alpha images by analyzing their brightness. Black = Transparent, White = Opaque.
+ * ImageJ does not support RGBA, therefore either this or loading the images from source is necessary. This plugin chooses the former.
+ * This allows working with changes made to the image in ImageJ without saving the image beforehand.
  */
 public class Alpha_Blending implements PlugIn {
 
-    private final static String OUTPUT_FILE  = "result.png";
+    private final static String OUTPUT_FILE  = "alpha_composition_result.png";
 
     private ImagePlus image1;
     private ImagePlus image1Alpha;
@@ -46,13 +61,11 @@ public class Alpha_Blending implements PlugIn {
             images.add(WindowManager.getImage(imageIDs[i]));
         }
 
-        PluginDialog dialog = new PluginDialog(images);
-     //   Dialog d = new Dialog(dialog);
-      //  d.setVisible(true);
+        new PluginDialog(images);
     }
 
-    public void execute(ImagePlus imageA, ImagePlus imageB) {
-        loadImages();
+    public void execute(ImagePlus imageA, ImagePlus imageB, ImagePlus alphaA, ImagePlus alphaB) {
+        loadImages(imageA, imageB, alphaA, alphaB);
 
         int width = Math.max(image1.getWidth(),image2.getWidth());
         int height = Math.max(image1.getHeight(), image2.getHeight());
@@ -78,8 +91,14 @@ public class Alpha_Blending implements PlugIn {
             }
         }
 
+        // we want to save our result directly in order to retain the alpha channel
         BufferedImage resultImage = create(cp, bp);
         saveResult(resultImage);
+
+        Opener opener = new Opener();
+        ImagePlus imagePlus = opener.openImage(OUTPUT_FILE);
+        imagePlus.show();
+
     }
 
     /**
@@ -224,15 +243,16 @@ public class Alpha_Blending implements PlugIn {
 
     /**
      * loads all images
+     * @param imageA
+     * @param imageB
+     * @param alphaA
+     * @param alphaB
      */
-    private void loadImages() {
-        Opener opener = new Opener();
-        String pathPrefix = "./";
-
-        image1 = opener.openImage(pathPrefix + "1.png");
-        image1Alpha = opener.openImage(pathPrefix + "1a.png");
-        image2 = opener.openImage(pathPrefix + "2.png");
-        image2Alpha = opener.openImage(pathPrefix + "2a.png");
+    private void loadImages(ImagePlus imageA, ImagePlus imageB, ImagePlus alphaA, ImagePlus alphaB) {
+        image1 = imageA;
+        image1Alpha = alphaA;
+        image2 = imageB;
+        image2Alpha = alphaB;
     }
 
 

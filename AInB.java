@@ -2,7 +2,7 @@
  * Created by Soeren Berken-Mersmann on 10.04.15.
  * Alpha Composition using the A in B operator
  */
-public class A_in_B extends Alpha_Blending {
+public class AInB extends Alpha_Blending {
 
     @Override
     protected int calculateColor(int color1, int color2, float alpha1Normalized, float alpha2Normalized, float alphaNorm) {
